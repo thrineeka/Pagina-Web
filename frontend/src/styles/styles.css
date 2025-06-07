@@ -1,0 +1,1076 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Source+Sans+3:wght@400;600&display=swap');
+
+:root {
+    /* Colors */
+    --color-primary: #003b75; /* Dark Blue */
+    --color-secondary: #CC0000; /* Formal Red */
+    --color-accent: #FFD700; /* Gold, optional for accents */
+    --color-text: #333; /* Main text */
+    --color-text-light: #555; /* Secondary or less emphasized text */
+    --color-light-gray: #f4f4f4; /* Alternate section background */
+    --color-white: #fff; /* White */
+    --color-primary-rgb: 0, 51, 102; /* For RGBA use */
+    --color-whatsapp: #25D366; /* WhatsApp Green */
+    --color-whatsapp-hover: #1DA851; /* Darker WhatsApp Green */
+
+    /* Spacing */
+    --spacing-extra-small: 5px;
+    --spacing-small: 10px;
+    --spacing-medium: 20px;
+    --spacing-large: 40px;
+    --spacing-section: 80px; /* Vertical space between sections */
+
+    /* Border & Shadow */
+    --border-radius: 8px; /* General border radius */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Soft shadow */
+    --box-shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+
+    /* Transitions */
+    --transition-speed-fast: 0.2s;
+    --transition-speed-normal: 0.3s; /* Normal transition speed */
+    --transition-speed-slow: 0.5s;
+}
+
+/* Estilos Generales - TIPOGRAFÍA FORMAL y AJUSTES */
+body {
+    font-family: 'Source Sans 3', sans-serif; /* Fuente para el cuerpo del texto */
+    margin: 0;
+    padding: 0;
+    color: var(--color-text);
+    line-height: 1.7; /* Aumentar la altura de línea para mejor legibilidad */
+    overflow-x: hidden; /* Prevenir scroll horizontal por desbordamiento */
+    font-size: 1.05rem; /* Tamaño de fuente base ligeramente más grande */
+    background-color: var(--color-white); /* Asegurar fondo blanco por defecto */
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+a {
+    text-decoration: none;
+    color: var(--color-primary);
+    transition: color var(--transition-speed) ease; /* Transición suave en enlaces */
+}
+
+a:hover {
+    color: var(--color-secondary);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Evita espacio extra bajo las imágenes */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lato', sans-serif; /* Fuente para títulos */
+    font-weight: 700 , Lato Bold; 
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium); /* Espacio después de los títulos */
+    line-height: 1.3;
+}
+
+h1 { font-size: 2.8rem; margin-bottom: var(--spacing-large); } /* Ajusta tamaños y espaciado */
+h2 { font-size: 2.2rem; margin-bottom: var(--spacing-large); }
+h3 { font-size: 1.7rem; margin-bottom: var(--spacing-medium); }
+h4 { font-size: 1.3rem; margin-bottom: var(--spacing-small); }
+
+
+.btn-agendar {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: var(--spacing-small) var(--spacing-medium);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+.btn-agendar:hover {
+    background-color: #a30000; /* Tono más oscuro del rojo */
+    transform: translateY(-2px); /* Ligero movimiento hacia arriba en hover */
+}
+
+.container { /* Contenedor genérico para centrar contenido */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-medium); /* Relleno en los lados */
+}
+
+/*header*/
+.site-header {
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow); /* Sombra mejorada */
+    padding: var(--spacing-small) var(--spacing-medium);
+    position: relative;
+    z-index: 100;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px; /* Un poco más ancho que el contenedor general si quieres */
+    margin: 0 auto;
+}
+
+.logo img {
+    height: 55px; /* Ajusta el tamaño del logo si es necesario */
+    transition: transform var(--transition-speed) ease;
+}
+.logo img:hover {
+    transform: scale(1.05); /* Pequeña animación al pasar el mouse */
+}
+
+/* --- Botón de Hamburguesa --- */
+.main-nav .nav-toggle {
+    display: none; /* Ocultar en escritorio por defecto */
+    background: none;
+    border: none;
+    font-size: 1.8rem; /* Icono más grande */
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: color var(--transition-speed) ease;
+    z-index: 1001; /* Asegura que esté siempre encima */
+}
+.main-nav .nav-toggle:hover {
+    color: var(--color-secondary);
+}
+
+/* --- Menú de Navegación (Escritorio) --- */
+.nav-menu {
+    display: flex; /* Para un menú horizontal en escritorio */
+    gap: var(--spacing-large); /* Espacio mayor entre elementos del menú */
+    align-items: center;
+    list-style: none; /* Quita los puntos de lista */
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu li {
+    position: relative;
+}
+
+.nav-menu a {
+    color: var(--color-primary);
+    padding: var(--spacing-small) 0;
+    display: block;
+    font-weight: 600; /* Texto del menú un poco más grueso */
+    transition: color var(--transition-speed) ease, border-bottom var(--transition-speed) ease;
+    border-bottom: 2px solid transparent; /* Línea inferior transparente por defecto */
+}
+
+.nav-menu a:hover {
+    color: var(--color-secondary);
+    border-bottom-color: var(--color-secondary); /* Línea inferior al pasar el mouse */
+}
+
+/* Ajuste para el botón Agendar, para que no tenga línea inferior */
+.nav-menu .btn-agendar {
+    /* Si es un botón, no es un <a>, asegúrate de que no tenga border-bottom */
+    background-color: var(--color-secondary); /* O el color que desees para el botón */
+    color: var(--color-white);
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: var(--border-radius);
+    text-decoration: none; /* Si es un link */
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease;
+}
+.nav-menu .btn-agendar:hover {
+    background-color: var(--color-primary); /* Cambia el color al pasar el mouse */
+}
+
+
+/* --- Submenú (Escritorio) --- */
+.submenu {
+    display: none; /* Oculto por defecto en escritorio */
+    position: absolute;
+    top: 100%; /* Debajo del enlace padre */
+    left: 0;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
+    min-width: 220px; /* Ancho mínimo del submenú */
+    z-index: 200;
+    opacity: 0; /* Para la animación de fade */
+    visibility: hidden; /* Para que no sea interactuable cuando está oculto */
+    flex-direction: column; /* Asegura que los ítems se apilen */
+    padding: var(--spacing-small) 0; /* Relleno arriba/abajo */
+    border-radius: var(--border-radius);
+    transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
+}
+
+.submenu li {
+    width: 100%;
+}
+
+.submenu a {
+    padding: 10px var(--spacing-medium); /* Relleno lateral en submenú */
+    white-space: nowrap; /* Evita que el texto se rompa */
+    font-weight: 400; /* Texto del submenú más ligero */
+    color: var(--color-text); /* Color de texto más oscuro */
+    border-bottom: none; /* Sin línea inferior en submenú */
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+.submenu a:hover {
+    background-color: var(--color-light-gray); /* Fondo al pasar el mouse */
+    color: var(--color-primary);
+}
+
+/* Mostrar submenú en hover (Escritorio) */
+.has-submenu:hover > .submenu {
+    display: flex; /* Cambiado a flex porque el submenu tiene flex-direction: column */
+    opacity: 1;
+    visibility: visible;
+}
+
+.has-submenu > a .fa-chevron-down {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    transition: transform var(--transition-speed) ease;
+}
+.has-submenu:hover > a .fa-chevron-down {
+    transform: rotate(180deg); /* Gira la flecha al abrir el submenú */
+}
+
+
+/* Carrusel */
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 1900vw;
+    height: 720px; /* Set a fixed height of 600 pixels */
+    overflow: hidden;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* 2. Contenedor de las imágenes: carousel-images */
+.carousel-images {
+    display: flex; /* <--- IMPRESCINDIBLE: Coloca las imágenes una al lado de la otra */
+    height: 100%; /* Ocupa toda la altura del contenedor padre (.hero-carousel) */
+    /* La propiedad 'transform' la maneja React, pero la transición debe ir aquí */
+    transition: transform 0.5s ease-in-out; /* <--- Para una animación suave al deslizar */
+    
+    /* El ancho total de este contenedor debe ser N * 100% donde N es el número de imágenes. */
+    /* Tu JS lo controla implícitamente con translateX, pero si no se ve, este es un sospechoso. */
+    /* Aunque React lo maneja con transform, a veces ayuda poner un ancho grande aquí */
+    /* Este ancho no se puede determinar directamente aquí si las imágenes son dinámicas,
+       pero el 'display: flex' y 'min-width: 100%' en las imágenes lo compensan. */
+}
+
+/* 3. Las imágenes individuales dentro del carrusel */
+.carousel-images img {
+    /* <--- MUY IMPORTANTE: Cada imagen debe ocupar el 100% del ancho del viewport del carrusel. */
+    /* Esto es clave para que cuando se desplace el 'carousel-images', se vea una imagen completa. */
+    min-width: 100%; /* Ocupa el 100% del ancho del contenedor flex que es el viewport */
+    max-width: 100%; /* Asegura que no se expanda más allá de su espacio */
+    height: 100%; /* Ocupa toda la altura disponible */
+    object-fit: cover; /* Recorta la imagen para que cubra el área sin distorsionarse */
+    display: block; /* Elimina cualquier espacio extra que algunos navegadores añaden a las imágenes */
+}
+
+/* Estilos para los botones de navegación (flechas) */
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10; /* Asegura que estén por encima de las imágenes */
+    font-size: 1.5rem;
+    border-radius: 5px; /* Bordes ligeramente redondeados */
+    /* Opcional: transiciones para hover */
+    transition: background-color 0.3s ease;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+/* Estilos para los puntos de navegación */
+.carousel-nav-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; /* Para alinear los puntos horizontalmente */
+    gap: 10px; /* Espacio entre los puntos */
+    z-index: 10;
+}
+
+.carousel-nav-dots .dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5); /* Color gris semitransparente para inactivos */
+    border-radius: 50%; /* Para que sean círculos */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-nav-dots .dot.active {
+    background-color: white; /* Color blanco para el punto activo */
+}
+
+/* Sección Nosotros */
+.nosotros-section {
+    padding: var(--spacing-section) var(--spacing-medium); /* Espaciado generoso */
+    background-color: var(--color-light-gray);
+}
+
+.nosotros-container {
+    display: flex;
+    gap: var(--spacing-large);
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.nosotros-image {
+    flex: 1; /* Ocupa la mitad del espacio en desktop */
+    min-width: 0; /* Permite que se achique */
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Asegura que la imagen respete el borde radio */
+    box-shadow: var(--box-shadow);
+}
+.nosotros-image img {
+    transition: transform 0.5s ease;
+}
+.nosotros-image img:hover {
+    transform: scale(1.05); /* Efecto zoom suave */
+}
+
+
+.nosotros-text {
+    flex: 1; /* Ocupa la otra mitad del espacio en desktop */
+}
+
+
+/* --- Services Section --- */
+.servicios-section {
+    padding: var(--spacing-section) var(--spacing-medium);
+    text-align: center;
+    background-color: var(--color-white); /* Ensure white background */
+}
+
+.servicios-section h2 {
+    margin-bottom: var(--spacing-large);
+}
+
+.servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 3 columns when wide enough, adjusts */
+    gap: var(--spacing-large);
+    max-width: 1000px; /* Slightly narrower width for better 3x3 grid centering */
+    margin: 0 auto; /* Center the grid */
+}
+
+.servicio-item {
+    background-color: var(--color-white);
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-large) var(--spacing-medium); /* More padding */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--transition-speed-normal) ease, box-shadow var(--transition-speed-normal) ease, border-color var(--transition-speed-normal) ease;
+    display: flex; /* Use flexbox to center initial content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px; /* Minimum height for boxes */
+}
+
+.servicio-item:hover {
+    transform: translateY(-8px); /* "Lift" effect */
+    box-shadow: var(--box-shadow-hover); /* More pronounced shadow */
+    border-color: var(--color-secondary); /* Border changes color */
+}
+
+.servicio-item i {
+    font-size: 3.5rem; /* Larger icons */
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-medium);
+    transition: color var(--transition-speed-normal) ease;
+}
+
+.servicio-item:hover i {
+    color: var(--color-white); /* Icon color on hover (goes behind) */
+}
+
+.servicio-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(var(--color-primary-rgb), 0.95); /* Semi-transparent background on hover, slightly more opaque */
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Hidden by default */
+    transition: opacity var(--transition-speed-normal) ease; /* Smooth transition */
+    padding: var(--spacing-medium);
+    box-sizing: border-box;
+}
+
+.servicio-item:hover .servicio-info {
+    opacity: 1; /* Show on hover */
+}
+
+.servicio-info h3 {
+    color: var(--color-white); /* White title */
+    margin-bottom: var(--spacing-medium);
+    font-size: 1.3rem; /* Slightly larger title on hover */
+    text-align: center;
+}
+
+.servicio-info .btn-ver-mas {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color var(--transition-speed-normal) ease, transform var(--transition-speed-normal) ease;
+}
+
+.servicio-info .btn-ver-mas:hover {
+    background-color: #a30000;
+    transform: translateY(-2px);
+}
+
+/* Sección Reseñas */
+.reviews-section {
+    padding: var(--spacing-section) var(--spacing-medium);
+    background-color: var(--color-light-gray);
+    text-align: center;
+    position: relative;
+    z-index: 1; /* Asegúrate de que esta sección esté bien posicionada */
+    overflow: hidden; /* Para contener el fondo si es necesario */
+}
+
+/* Fondo de la sección */
+.reviews-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* MUY IMPORTANTE: el fondo DEBE tener un z-index más bajo que el contenido */
+    opacity: 0.2;
+    overflow: hidden;
+}
+
+.reviews-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block; /* Para eliminar posibles espacios */
+}
+
+.reviews-section h2 {
+    position: relative;
+    z-index: 2; /* Sobre el fondo */
+    margin-bottom: var(--spacing-large);
+    color: var(--color-heading, #333); /* Asegura que el color sea visible */
+}
+
+/* Contenedor de las reseñas - ESTE ES EL CRÍTICO */
+.reviews-container {
+    position: relative; /* Para que las flechas y los items se posicionen respecto a él */
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden; /* <--- CRUCIAL: Solo se ve la reseña activa */
+    /* La altura es clave para que los botones se centren y la reseña se vea */
+    min-height: 250px; /* Ajusta esta altura para que sea suficiente para la reseña más larga */
+    height: auto; /* Permite que se expanda si el contenido es mayor que min-height */
+    z-index: 2; /* Sobre el fondo */
+    display: flex; /* <-- Importante: para manejar la posición de los items */
+    justify-content: center; /* Centra el item activo horizontalmente */
+    align-items: center; /* Centra el item activo verticalmente */
+    margin-bottom: var(--spacing-large);
+}
+
+/* Item individual de reseña */
+.review-item {
+    /* Aquí es donde necesitamos un cambio fundamental si queremos transición y control de visibilidad */
+    position: absolute; /* <--- MUY IMPORTANTE: Cada reseña se superpone a las demás */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa el 100% del contenedor */
+    height: 100%; /* Ocupa el 100% de la altura del contenedor */
+    
+    padding: var(--spacing-large);
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    
+    opacity: 0; /* Por defecto invisible */
+    visibility: hidden; /* Para que no sea interactuable cuando está oculto */
+    transition: opacity 0.5s ease, visibility 0.5s ease; /* Transición suave */
+    
+    display: flex; /* Para centrar el contenido de la reseña dentro del item */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.review-item.active {
+    opacity: 1; /* Hace visible la reseña activa */
+    visibility: visible; /* Hace interactuable la reseña activa */
+    position: relative; /* <--- Esto es clave: la reseña activa debe ocupar espacio */
+}
+
+.review-item p {
+    font-size: 1.15rem;
+    font-style: italic;
+    margin-bottom: var(--spacing-medium);
+    color: var(--color-text-light);
+}
+
+.reviewer {
+    font-weight: 600;
+    font-style: normal;
+    color: var(--color-primary);
+    font-size: 1rem;
+}
+
+/* Botones de navegación (estos ya estaban bien, pero los repito para referencia) */
+.review-prev,
+.review-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(var(--color-primary-rgb, 0, 51, 102), 0.6);
+    border: none;
+    color: var(--color-white);
+    font-size: 2rem;
+    cursor: pointer;
+    padding: var(--spacing-small);
+    border-radius: 50%;
+    z-index: 3; /* Sobre el fondo y las reseñas */
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review-prev:hover,
+.review-next:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.review-prev {
+    left: var(--spacing-medium);
+}
+
+.review-next {
+    right: var(--spacing-medium);
+}
+
+
+/* Footer */
+.site-footer {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: var(--spacing-large) var(--spacing-medium); /* Relleno */
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Columnas que se ajustan */
+    gap: var(--spacing-large);
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-bottom: var(--spacing-large);
+}
+
+.footer-column h3 {
+    color: var(--color-white);
+    margin-bottom: var(--spacing-medium);
+    font-size: 1.3rem;
+}
+
+.footer-logo img {
+    height: 60px; /* Ajusta si es necesario */
+    filter: brightness(0) invert(1); /* Hace que el logo se vea blanco si es oscuro */
+    margin-bottom: var(--spacing-medium);
+}
+
+.footer-nav li {
+    margin-bottom: 10px;
+}
+
+.footer-nav a {
+    color: rgba(255, 255, 255, 0.8); /* Color de enlace más suave */
+    transition: color var(--transition-speed) ease;
+    font-size: 1rem;
+}
+
+.footer-nav a:hover {
+    color: var(--color-white); /* Blanco al pasar el mouse */
+}
+
+.footer-column p {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: flex-start; /* Alinea ícono y texto al inicio */
+}
+
+.footer-column p i {
+    margin-right: 10px;
+    color: var(--color-secondary); /* Color del icono de contacto */
+    font-size: 1.1rem;
+    margin-top: 4px; /* Ajuste vertical del icono */
+}
+
+.footer-map iframe {
+    width: 100%;
+    height: 200px; /* Altura fija para el mapa */
+    border: 0;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.social-icons a {
+    color: var(--color-white);
+    font-size: 1.8rem; /* Iconos de redes sociales más grandes */
+    margin-right: var(--spacing-medium);
+    transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    display: inline-block; /* Necesario para transform */
+}
+
+.social-icons a:last-child {
+    margin-right: 0;
+}
+
+.social-icons a:hover {
+     color: var(--color-secondary);
+     transform: translateY(-3px); /* Efecto ligero al pasar el mouse */
+}
+
+
+.copyright {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    padding-top: var(--spacing-medium); /* Espacio arriba del copyright */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea separadora */
+}
+
+/* WhatsApp Bubble - MODIFICADO HOVER COLOR */
+.whatsapp-bubble {
+    position: fixed;
+    bottom: var(--spacing-large); /* Ajusta la posición */
+    right: var(--spacing-large); /* Ajusta la posición */
+    background-color: #25D366; /* Verde de WhatsApp */
+    color: var(--color-white); /* Icono blanco por defecto */
+    font-size: 2.8rem; /* Tamaño del icono */
+    width: 65px; /* Ancho/Alto fijo */
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra */
+    z-index: 1000; /* Asegura que esté encima de todo */
+    transition: transform var(--transition-speed) ease, background-color var(--transition-speed) ease;
+}
+
+.whatsapp-bubble:hover {
+    transform: scale(1.1); /* Efecto scale */
+    background-color: #1DA851; /* Verde ligeramente más oscuro al pasar el mouse */
+     /* Color del icono ya es blanco por defecto, no necesita cambiar aquí */
+}
+
+
+/* --- Estilos para páginas internas (Contacto, Servicios) --- */
+.page-content {
+    padding: var(--spacing-section) var(--spacing-medium);
+    max-width: 1000px; /* Ancho máximo para el contenido de las páginas internas */
+    margin: 0 auto;
+}
+
+
+/* Estilos específicos para la sección de contacto en la página contacto.html */
+.contact-info-section {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    gap: var(--spacing-large); /* Espacio entre la info y el mapa */
+    align-items: flex-start; /* Alinea elementos al inicio */
+}
+
+.contact-details {
+    flex: 1; /* Ocupa espacio flexible */
+    min-width: 280px; /* Ancho mínimo antes de envolver */
+}
+
+.contact-details h3 {
+    margin-bottom: var(--spacing-medium);
+}
+
+.contact-details p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center; /* Alinea icono y texto */
+}
+
+.contact-details p i {
+    margin-right: 10px;
+    color: var(--color-secondary); /* Color del icono de contacto */
+    font-size: 1.3rem;
+}
+
+.contact-map {
+    flex: 1.5; /* Ocupa un poco más de espacio que los detalles */
+    min-width: 300px; /* Ancho mínimo para el mapa */
+    height: 400px; /* Altura para el mapa en la sección principal, un poco más alto */
+    border: 1px solid #ddd; /* Borde opcional */
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Asegura que el iframe respete el borde/radio */
+    box-shadow: var(--box-shadow);
+}
+
+.contact-map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+/* Estilos opcionales para la página de detalle de servicio */
+.service-detail-section h1 {
+    text-align: center;
+    margin-bottom: var(--spacing-large);
+}
+
+.service-main-image {
+    display: block; /* Asegura que la imagen esté en su propia línea */
+    margin: 0 auto var(--spacing-large); /* Centra la imagen y añade espacio debajo */
+    max-width: 700px; /* Ancho máximo para la imagen principal, un poco más grande */
+    height: auto;
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    box-shadow: var(--box-shadow);
+}
+
+.service-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-text-light); /* Texto de descripción ligeramente más suave */
+}
+
+.service-description p {
+    margin-bottom: var(--spacing-medium); /* Espacio entre párrafos */
+}
+
+
+.service-description ul {
+     margin-top: var(--spacing-medium);
+     padding-left: var(--spacing-medium); /* Indentar lista */
+     list-style: disc; /* Usar viñetas */
+     color: var(--color-text-light);
+}
+
+.service-description ul li {
+    margin-bottom: 10px;
+}
+
+
+/* --- Media Queries para Responsividad --- */
+
+/* Tablet y Móviles más grandes */
+@media (max-width: 992px) {
+    .nav-menu {
+        gap: var(--spacing-medium); /* Reducir gap en tablet */
+    }
+
+     h1 { font-size: 2.2rem; }
+     h2 { font-size: 1.8rem; }
+     h3 { font-size: 1.4rem; }
+
+    .nosotros-container {
+        flex-direction: column; /* Apila la imagen y el texto */
+    }
+
+    .nosotros-image {
+        flex-basis: auto; /* Restablece la base flexible */
+        width: 100%; /* Ocupa todo el ancho */
+        max-width: 500px; /* Limitar ancho de imagen en modo apilado */
+        margin: 0 auto var(--spacing-large); /* Centrar y añadir espacio abajo */
+    }
+     .nosotros-text {
+        flex-basis: auto;
+        width: 100%;
+     }
+
+    .servicios-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Podría tener 2 columnas */
+        gap: var(--spacing-medium);
+    }
+     .servicio-item {
+         padding: var(--spacing-medium); /* Reducir padding */
+     }
+
+     .review-item {
+         padding: var(--spacing-medium);
+     }
+     .review-item p {
+         font-size: 1.05rem; /* Reducir fuente de reseña */
+     }
+
+     .review-prev, .review-next {
+         font-size: 1.6rem; /* Flechas de reseñas más pequeñas */
+         width: 35px;
+         height: 35px;
+     }
+
+     .footer-container {
+         gap: var(--spacing-large);
+     }
+     .footer-column h3 {
+         font-size: 1.2rem;
+     }
+     .social-icons a {
+         font-size: 1.6rem;
+     }
+}
+
+
+/* Móviles */
+@media (max-width: 768px) {
+     :root { /* Reducir espaciado en móviles */
+         --spacing-medium: 15px;
+         --spacing-large: 30px;
+         --spacing-section: 60px;
+     }
+    .header-container {
+         padding: var(--spacing-small); /* Menos padding en móviles */
+    }
+
+    .logo img {
+        height: 45px; /* Logo más pequeño en móviles */
+    }
+
+    .main-nav .nav-toggle {
+        display: block; /* Muestra el botón de hamburguesa */
+    }
+
+    /* Ocultar el menú de navegación en móvil por defecto */
+    .nav-menu {
+        position: fixed; /* Fijo en la pantalla */
+        top: 0;
+        right: -100%; /* Mueve el menú completamente fuera de la pantalla a la derecha */
+        width: 70%; /* Ancho del menú lateral */
+        height: 100vh; /* Ocupa toda la altura de la ventana */
+        background-color: var(--color-white); /* Fondo del menú móvil */
+        flex-direction: column; /* Los ítems se apilan verticalmente */
+        align-items: flex-start; /* Alinea los ítems a la izquierda */
+        padding: 80px var(--spacing-medium) var(--spacing-medium); /* Espacio para el logo/cerrar arriba */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        transition: right 0.3s ease-in-out; /* Animación de deslizamiento */
+        z-index: 999; /* Asegúrate de que esté por encima del contenido */
+    }
+
+    /* Cuando la clase 'menu-open' está activa, desliza el menú a la vista */
+    .nav-menu.menu-open {
+        right: 0; /* Desliza el menú para que sea visible */
+    }
+
+    .nav-menu li {
+        width: 100%;
+        margin-bottom: var(--spacing-small); /* Espacio entre ítems del menú móvil */
+    }
+
+    .nav-menu a {
+        padding: 10px 0; /* Relleno para los enlaces en móvil */
+        border-bottom: none; /* Elimina la línea inferior del escritorio */
+        text-align: left; /* Alinea el texto a la izquierda */
+        font-size: 1rem; /* Ajusta el tamaño de fuente para móvil */
+    }
+    .nav-menu a:hover {
+        border-bottom-color: transparent; /* No línea inferior en hover en móvil */
+    }
+
+    /* --- Submenú en Móvil --- */
+    .submenu {
+        position: static; /* Elimina el posicionamiento absoluto en móvil */
+        background-color: var(--color-light-gray); /* Un color diferente para el submenú en móvil */
+        box-shadow: none; /* Sin sombra */
+        padding: 0; /* Sin padding global */
+        margin-top: 10px; /* Pequeño espacio superior */
+        border-radius: 0; /* Sin bordes redondeados */
+        /* Controlado por la clase 'active' de React */
+        display: none; /* Oculto por defecto en móvil */
+        opacity: 1; /* Siempre visible cuando se activa */
+        visibility: visible; /* Siempre interactuable cuando se activa */
+        transition: none; /* Sin transición al aparecer/desaparecer */
+    }
+
+    /* Muestra el submenú cuando el elemento padre tiene la clase 'active' */
+    .has-submenu.active > .submenu {
+        display: flex; /* Muestra el submenú en formato de columna */
+    }
+
+    .submenu li {
+        width: 100%; /* Cada ítem del submenú ocupa el 100% */
+    }
+    .submenu a {
+        padding: 8px 30px; /* Indenta los ítems del submenú un poco más */
+        font-size: 0.95rem;
+    }
+
+    /* Gira la flecha del submenú en móvil */
+    .has-submenu.active > a .fa-chevron-down {
+        transform: rotate(180deg);
+    }
+    
+    /* Botón de cerrar el menú en móvil, si lo usas en el JSX */
+    .close-menu {
+        display: block; /* Asegúrate de que se muestre */
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1002; /* Por encima del nav-toggle y el menú */
+        font-size: 2rem;
+        color: var(--color-primary);
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Carrusel en Móviles */
+    .hero-carousel {
+        /* No fijar altura aquí, dejar que aspect-ratio y object-fit la manejen */
+         aspect-ratio: 16 / 10; /* CAMBIO: Relación de aspecto más ancha que 1:1, menos propensa a cortar verticalmente */
+         max-height: 350px;
+    }
+    .carousel-images img {
+        width: calc(100% / 3); /* Cada imagen ocupa 1/3 del ancho del contenedor */
+        height: 100%; /* Ocupa la altura del contenedor */
+        object-fit: cover; /* CAMBIO: Mantener cover para que no haya barras negras, pero la nueva relación de aspecto cortará menos */
+    }
+    .carousel-prev, .carousel-next {
+         font-size: 2rem;
+    }
+
+
+    /* Nosotros - Versión Móvil con Imagen Transparente Detrás */
+    .nosotros-section {
+        position: relative; /* Contenedor padre con posición relativa */
+        padding: var(--spacing-section) var(--spacing-medium); /* Espacio alrededor del texto */
+        z-index: 1; /* Asegura que el texto esté encima */
+    }
+    .nosotros-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Detrás del texto */
+        opacity: 0.1; /* Transparencia mayor en móvil si es necesario */
+        overflow: hidden;
+         max-width: 100%; /* Asegurar que la imagen absoluta no exceda el ancho */
+    }
+    .nosotros-image img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover; /* Asegura que la imagen cubra el área */
+    }
+     .nosotros-text {
+         position: relative; /* Asegura que el texto tenga un contexto de apilamiento */
+         z-index: 2; /* Sobre la imagen de fondo */
+         background-color: rgba(255,255,255,0.9); /* Fondo semi-transparente para mejorar legibilidad */
+         padding: var(--spacing-medium);
+         border-radius: var(--border-radius);
+     }
+
+    .servicios-grid {
+        grid-template-columns: 1fr; /* Una columna en móviles */
+        gap: var(--spacing-medium);
+    }
+     .servicio-item {
+          min-height: 180px;
+          padding: var(--spacing-medium);
+     }
+
+
+    /* Reseñas - Ajustes de botones */
+    .review-prev,
+    .review-next {
+         /* AJUSTE: Tamaño y posición de flechas de reseñas en móvil */
+         left: var(--spacing-small); /* Más cerca del borde */
+         right: var(--spacing-small); /* Más cerca del borde */
+         font-size: 2rem; /* Ligeramente más grandes */
+         width: 40px; /* Aumentar área de click */
+         height: 40px; /* Aumentar área de click */
+         padding: var(--spacing-small);
+         /* Asegurar que no colisionen con texto largo si las reseñas son muy anchas */
+         /* Puedes ajustar left/right a un valor fijo como 10px o 5px si var(--spacing-small) es dinámico */
+         left: 10px;
+         right: 10px;
+    }
+    .page-content img { /* Aplica a imágenes dentro del contenido principal */
+         max-width: 100%;
+         height: auto; /* Crucial para escalar proporcionalmente */
+         display: block; /* Evita espacio extra */
+         margin-bottom: var(--spacing-medium); /* Añade espacio debajo */
+         border-radius: var(--border-radius);
+    }
+
+
+    .footer-container {
+        grid-template-columns: 1fr; /* Columnas apiladas en móviles */
+        text-align: center;
+    }
+
+    .footer-column {
+        text-align: center; /* Centra el contenido de la columna */
+    }
+     .footer-column p {
+         justify-content: center; /* Centra los párrafos con iconos */
+     }
+     .social-icons {
+         justify-content: center; /* Centra los iconos sociales */
+         display: flex; /* Permite usar justify-content */
+     }
+
+     .whatsapp-bubble {
+        bottom: var(--spacing-medium);
+        right: var(--spacing-medium);
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+     }
+}

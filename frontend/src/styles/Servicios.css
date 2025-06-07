@@ -1,0 +1,131 @@
+.servicios-page-container {
+    padding: 100px 20px 40px; /* Ajusta el padding superior para no chocar con el header fijo */
+    max-width: 1200px;
+    margin: 0 auto; /* Centra el contenedor */
+    text-align: center;
+}
+
+/* Estilo para el título principal de la página */
+.servicios-page-container h1 {
+    font-size: 2.8rem;
+    color: var(--color-heading, #2c3e50); /* Usa tu variable CSS para el color de los encabezados, con un fallback */
+    margin-bottom: 20px;
+}
+
+/* Estilo para el párrafo introductorio */
+.servicios-intro {
+    font-size: 1.1rem;
+    color: var(--color-text-light, #555); /* Usa tu variable CSS para un color de texto más claro, con un fallback */
+    margin-bottom: 50px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: auto; /* Centra el párrafo */
+    margin-right: auto;
+}
+
+/* Contenedor para la cuadrícula de tarjetas de servicios */
+.servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Columnas responsivas: mínimo 280px, máximo 1fr */
+    gap: 30px; /* Espacio entre las tarjetas */
+    margin-top: 40px;
+}
+
+/* Estilo para cada tarjeta de servicio individual */
+.servicio-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 30px;
+    display: flex;
+    flex-direction: column; /* Organiza el contenido en columna */
+    align-items: center; /* Centra horizontalmente el contenido */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave para hover */
+}
+
+/* Efecto hover para las tarjetas de servicio */
+.servicio-card:hover {
+    transform: translateY(-5px); /* Desplaza la tarjeta ligeramente hacia arriba */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hover */
+}
+
+/* Estilo para el ícono dentro de la tarjeta */
+.servicio-icon {
+    font-size: 3.5rem;
+    color: var(--color-primary, #007bff); /* Color principal de tu tema, con un fallback */
+    margin-bottom: 20px;
+}
+
+/* Estilo para el título H2 dentro de la tarjeta */
+.servicio-card h2 {
+    font-size: 1.8rem;
+    color: var(--color-heading, #2c3e50);
+    margin-bottom: 15px;
+}
+
+/* Estilo para el párrafo de descripción dentro de la tarjeta */
+.servicio-card p {
+    font-size: 1rem;
+    color: var(--color-text, #34495e); /* Color de texto general, con un fallback */
+    margin-bottom: 25px;
+    flex-grow: 1; /* Permite que el párrafo ocupe el espacio disponible, manteniendo el botón abajo */
+}
+
+/* Estilo para el botón "Ver más detalles" */
+.btn-ver-mas {
+    display: inline-block;
+    background-color: var(--color-secondary, #dfd8d8); /* Color secundario para botones, con un fallback */
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none; /* Quita el subrayado de los enlaces */
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Transición suave para hover */
+}
+
+/* Efecto hover para el botón "Ver más detalles" */
+.btn-ver-mas:hover {
+    background-color: var(--color-secondary-dark, #dfd8d8); /* Color secundario más oscuro al hover */
+}
+
+/* --- Media Queries para Responsividad --- */
+
+/* Para pantallas más pequeñas (ej. tablets y móviles) */
+@media (max-width: 768px) {
+    .servicios-page-container {
+        padding: 80px 15px 30px; /* Ajusta el padding para pantallas más pequeñas */
+    }
+
+    .servicios-page-container h1 {
+        font-size: 2.2rem;
+    }
+
+    .servicios-intro {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .servicios-grid {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    }
+
+    .servicio-card {
+        padding: 25px; /* Ajusta el padding de las tarjetas */
+    }
+}
+
+/* Puedes añadir más media queries si lo necesitas, por ejemplo, para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .servicios-page-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .servicio-icon {
+        font-size: 3rem;
+    }
+
+    .servicio-card h2 {
+        font-size: 1.5rem;
+    }
+}
