@@ -1,3 +1,5 @@
+//      componentslogin/PatienDashboard.tsx
+
 import React from 'react';
 import { useAuth } from '../pages/AuthPage'; // Ajusta la ruta si AuthPage.tsx está en un directorio diferente
 import '../styles/Dashboard.css'; // Asegúrate de que este CSS esté en su lugar
