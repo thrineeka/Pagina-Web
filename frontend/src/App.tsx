@@ -1,7 +1,7 @@
 // src/App.tsx
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import React from 'react';
 // Componentes de navegación y pie de página
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -21,7 +21,7 @@ import PruebaEsfuerzo from './servicios/PruebaEsfuerzo';
 import Mapa from './servicios/Mapa';
 
 // Componentes de autenticación y paneles de control
-import AuthPage, { AuthProvider, useAuth } from './pages/AuthPage';
+import AuthPage, { AuthProvider, useAuth } from '../src/pages/AuthPage'; // Asegúrate de que AuthPage maneje la autenticación correctamente
 // Si LoginPage es idéntico a AuthPage, o si AuthPage maneja ambos (login/registro),
 // podrías considerar eliminar LoginPage y solo usar AuthPage.
 // Para este ejemplo, asumiremos que LoginPage es solo una ruta de acceso a AuthPage
