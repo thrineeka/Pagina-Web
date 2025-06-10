@@ -2,7 +2,7 @@
 
 ###
 
-<p align="left">git init:            Inicializa un nuevo repositorio Git local en el directorio actual. Crea una subcarpeta .git con todos los archivos necesarios para el control de versiones.</p>
+<p align="left">git init:       ###############     Inicializa un nuevo repositorio Git local en el directorio actual. Crea una subcarpeta .git con todos los archivos necesarios para el control de versiones.</p>
 
 ###
 
