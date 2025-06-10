@@ -2,11 +2,11 @@
 
 ###
 
-<p align="left">git init: Inicializa un nuevo repositorio Git local en el directorio actual. Crea una subcarpeta .git con todos los archivos necesarios para el control de versiones.</p>
+<p align="left">git init:            Inicializa un nuevo repositorio Git local en el directorio actual. Crea una subcarpeta .git con todos los archivos necesarios para el control de versiones.</p>
 
 ###
 
-<p align="left">git clone <URL_repositorio>: Clona un repositorio remoto existente en tu máquina local. Descarga una copia completa del proyecto, incluyendo todo su historial.</p>
+<p align="left">git clone <URL_repositorio>:          Clona un repositorio remoto existente en tu máquina local. Descarga una copia completa del proyecto, incluyendo todo su historial.</p>
 
 ###
 
