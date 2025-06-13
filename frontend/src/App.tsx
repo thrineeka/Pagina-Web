@@ -1,7 +1,179 @@
-// src/App.tsx
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, createContext, useContext, type ReactNode, useCallback } from 'react';
+import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import React from 'react';
+
+// Importa el CSS global (si lo tienes) o el CSS específico de login
+import './styles/login.css'; // Asegúrate de que esta ruta sea correcta
+
+// --- Interfaces para el Contexto de Autenticación ---
+// 'Usuario' se elimina de User y AuthContextType si ya no es un rol en tu DB.
+// Si 'Usuario' es un rol genérico para pacientes, considera usar solo 'Paciente'.
+// Si 'Usuario' es un rol intermedio o por defecto, déjalo y asegúrate de que tu backend lo maneje.
+// Para este ejemplo, lo mantendré para PrivateRoute pero lo quitaré de la interfaz 'User'
+// si 'Paciente' es el único rol para usuarios no admin.
+export interface User {
+    id: string;
+    username: string;
+    email: string;
+    rol: 'Paciente' | 'Administrador'; // Aquí has quitado 'Usuario'
+    primer_nombre?: string;
+    apellido_paterno?: string;
+    apellido_materno?: string;
+    telefono?: string;
+    tipo_documento?: string;
+    numero_documento?: string;
+}
+
+export interface AuthResponse {
+    token: string;
+    user: User;
+    message: string;
+}
+
+interface AuthContextType {
+    isAuthenticated: boolean;
+    user: User | null;
+    // Aquí 'Usuario' también debe reflejar los roles que realmente pueden existir
+    userRole: 'Paciente' | 'Administrador' | null;
+    login: (userData: User, token: string) => void;
+    logout: () => void;
+    isLoadingAuth: boolean;
+}
+
+// --- Contexto de Autenticación ---
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+};
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
+    // El tipo de userRole debe ser coherente con la interfaz User y el contexto.
+    // Si 'Usuario' no es un rol válido en tu backend, elimínalo de aquí también.
+    const [userRole, setUserRole] = useState<'Paciente' | 'Administrador' | null>(null); // Corregido: eliminado 'Usuario' si no es un rol DB
+
+    const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(true); // Para manejar el estado de carga inicial
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token');
+        const storedUser = localStorage.getItem('user');
+
+        if (storedToken && storedUser) {
+            try {
+                const parsedUser: User = JSON.parse(storedUser);
+                setIsAuthenticated(true);
+                setUser(parsedUser);
+                setUserRole(parsedUser.rol);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+            } catch (e) {
+                console.error("Failed to parse user from localStorage", e);
+                // Si hay un error de parseo, asumimos que los datos están corruptos y deslogeamos.
+                setIsAuthenticated(false);
+                setUser(null);
+                setUserRole(null);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+            }
+        }
+        setIsLoadingAuth(false);
+    }, []);
+
+    const login = useCallback((userData: User, token: string) => {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(userData));
+        setIsAuthenticated(true);
+        setUser(userData);
+        setUserRole(userData.rol);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }, []);
+
+    const logout = useCallback(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+        setUser(null);
+        setUserRole(null);
+        delete axios.defaults.headers.common['Authorization'];
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ isAuthenticated, user, userRole, login, logout, isLoadingAuth }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+// --- Fin Contexto de Autenticación ---
+
+// --- Importación de Componentes de Autenticación ---
+// Asumo que ahora estos componentes están en 'src/components/auth/'
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import ForgotPassword from './components/auth/ForgotPassword';
+import AdminDashboard from './components/auth/AdminDashboard';
+import PatientDashboard from './components/auth/PatientDashboard';
+
+// --- Componente AuthApp (ahora en App.tsx) ---
+// Este componente manejará la vista de autenticación (Login, Register, ForgotPassword)
+// y redirigirá a los dashboards si el usuario ya está autenticado.
+const AuthApp: React.FC = () => {
+    // Correcto: Extraer login y logout directamente de useAuth
+    const { isAuthenticated, user, userRole, login, logout } = useAuth();
+    const [currentView, setCurrentView] = useState<'login' | 'register' | 'forgotPassword'>(
+        'login'
+    );
+
+    // No necesitas este useEffect si el manejo de redirección se hace en AppContent
+    // o si AuthApp solo se renderiza cuando no está autenticado.
+    // Si la ruta ya es /patien/dashboard o /admin/dashboard, AuthApp no debería ni montarse aquí.
+    // Lo comento porque el useEffect en AppContent ya maneja la redirección.
+    /*
+    useEffect(() => {
+        if (isAuthenticated && userRole) {
+            if (userRole === 'Paciente') {
+                setCurrentView('login'); // Redirige internamente para mostrar el PatientDashboard
+            } else if (userRole === 'Administrador') {
+                setCurrentView('login'); // Redirige internamente para mostrar el AdminDashboard
+            }
+        }
+    }, [isAuthenticated, userRole]);
+    */
+
+    // Si ya está autenticado y tiene un rol, muestra el dashboard adecuado.
+    // Esta lógica es esencialmente lo que PrivateRoute debería decidir.
+    // Aquí, AuthApp está siendo usado como un "wrapper" para dashboards protegidos.
+    if (isAuthenticated && user && userRole) {
+        if (userRole === 'Paciente') {
+            return <PatientDashboard user={user} onLogout={logout} />;
+        } else if (userRole === 'Administrador') {
+            return <AdminDashboard user={user} onLogout={logout} />;
+        }
+    }
+
+    // Si no está autenticado, muestra el formulario de login/registro/recuperación
+    // `login` es la función del contexto para el éxito del login
+    switch (currentView) {
+        case 'register':
+            return <Register onNavigateToLogin={() => setCurrentView('login')} />;
+        case 'forgotPassword':
+            return <ForgotPassword onNavigateToLogin={() => setCurrentView('login')} />;
+        case 'login':
+        default:
+            return (
+                <Login
+                    onLoginSuccess={login} // Pasa la función `login` del contexto
+                    onNavigateToRegister={() => setCurrentView('register')}
+                    onNavigateToForgotPassword={() => setCurrentView('forgotPassword')}
+                />
+            );
+    }
+};
+
 // Componentes de navegación y pie de página
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -20,75 +192,64 @@ import Holter from './servicios/Holter';
 import PruebaEsfuerzo from './servicios/PruebaEsfuerzo';
 import Mapa from './servicios/Mapa';
 
-// Componentes de autenticación y paneles de control
-import AuthPage, { AuthProvider, useAuth } from '../src/pages/AuthPage'; // Asegúrate de que AuthPage maneje la autenticación correctamente
-// Si LoginPage es idéntico a AuthPage, o si AuthPage maneja ambos (login/registro),
-// podrías considerar eliminar LoginPage y solo usar AuthPage.
-// Para este ejemplo, asumiremos que LoginPage es solo una ruta de acceso a AuthPage
-// o un componente de login alternativo.
-import LoginPage from './pages/LoginPage'; // Asegúrate de que este componente existe y funciona como esperas
-
-import PatientDashboard from './componentslogin/PatienDashboard';
-import AdminDashboard from './componentslogin/AdminDashboard';
+// Importa BrowserRouter como Router para evitar conflictos de nombres
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
 
-// --- Componente para Rutas Protegidas ---
 const PrivateRoute: React.FC<{ children: React.ReactNode, allowedRoles: ('Paciente' | 'Administrador')[] }> = ({ children, allowedRoles }) => {
-    const { isAuthenticated, userRole } = useAuth(); // Obtiene el estado de autenticación y el rol del usuario
+    const { isAuthenticated, userRole, isLoadingAuth } = useAuth();
 
-    // Log para depuración
-    // console.log('PrivateRoute: isAuthenticated', isAuthenticated, 'userRole', userRole, 'allowedRoles', allowedRoles);
+    if (isLoadingAuth) {
+        return <div>Cargando autenticación...</div>;
+    }
 
     if (!isAuthenticated) {
-        // Si no está autenticado, redirige al login (puedes usar '/auth' si es tu punto de entrada único)
-        // Usamos '/login' aquí porque tienes esa ruta. Si siempre es AuthPage, podrías redirigir a '/auth'.
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/auth" replace />;
     }
 
-    // Si está autenticado, verifica si el rol del usuario está permitido para esta ruta
-    // Importante: Los roles en `allowedRoles` deben coincidir con los roles que tu backend envía (ej. 'Paciente', 'Administrador')
+    // Corregido: `userRole` en `PrivateRoute` debe coincidir con `AuthContextType` y `User`
+    // Si 'Usuario' ya no es un rol en tu DB, quítalo de aquí.
+    // Si 'Paciente' es el único rol para usuarios "no admin", asegúrate de que allowedRoles lo refleje.
     if (userRole && allowedRoles.includes(userRole)) {
-        return <>{children}</>; // Si el rol es correcto, renderiza el contenido
+        return <>{children}</>;
     }
 
-    // Si está autenticado pero el rol no es el permitido, redirige al home o a una página de "acceso denegado"
     console.warn(`Usuario con rol "${userRole}" intentó acceder a una ruta restringida. Redirigiendo a /.`);
-    return <Navigate to="/" replace />; // Redirige al home si el rol no es autorizado para esta ruta
+    return <Navigate to="/" replace />;
 };
-// --- Fin Componente PrivateRoute ---
 
-
-// Componente principal que contiene las rutas y la lógica de visibilidad de Header/Footer
+// Componente principal que contiene las rutas y la lógica de visibilidad de Header/Footer.
 const AppContent: React.FC = () => {
     const location = useLocation();
-    const { isAuthenticated, userRole } = useAuth(); // Para manejar la redirección de usuarios logueados
+    const { isAuthenticated, userRole, isLoadingAuth } = useAuth();
 
-    // Rutas donde el Header y Footer NO deben mostrarse
-    // Es crucial que estos paths coincidan exactamente con los `path` en tus <Route>
-    // y con los paths a los que se redirige.
-    // He ajustado 'patien/dashboard' para que coincida con la ruta definida abajo.
-    const noAuthRoutes = ['/auth', '/login', '/patien/dashboard', '/admin/dashboard'];
+    const noAuthRoutes = ['/auth'];
     const shouldHideNav = noAuthRoutes.includes(location.pathname);
 
-    // Lógica para redirigir si el usuario ya está logueado y trata de ir a /auth o /login
-    // Esta lógica debe ir antes de las rutas para que se evalúe primero
-    if (isAuthenticated) {
-        if (location.pathname === '/auth' || location.pathname === '/login') {
-            if (userRole === 'Paciente') {
-                return <Navigate to="/patien/dashboard" replace />;
+    // Redirección si un usuario autenticado intenta ir a /auth
+    useEffect(() => {
+        if (!isLoadingAuth && isAuthenticated && userRole && location.pathname === '/auth') {
+            if (userRole === 'Paciente') { // Corregido: eliminando 'Usuario' si no es un rol distinto
+                // console.log("Usuario autenticado (Paciente) en /auth, redirigiendo a /patien/dashboard");
+                // navigate("/patien/dashboard", { replace: true }); // Preferible usar `useNavigate`
             } else if (userRole === 'Administrador') {
-                return <Navigate to="/admin/dashboard" replace />;
+                // console.log("Usuario autenticado (Administrador) en /auth, redirigiendo a /admin/dashboard");
+                // navigate("/admin/dashboard", { replace: true }); // Preferible usar `useNavigate`
             }
-            // Si hay otros roles o un rol desconocido, podrías redirigir a una página predeterminada
-            // o simplemente permitir que la lógica de la ruta AuthPage maneje un estado "ya logueado".
-            // Para simplicidad, podemos dejar que caiga por las rutas si no es ni paciente ni admin.
+        }
+    }, [isLoadingAuth, isAuthenticated, userRole, location.pathname]); // No necesitas navigate aquí si ya lo manejas con <Navigate>
+
+    // Redirección si un usuario autenticado intenta ir a /auth
+    if (!isLoadingAuth && isAuthenticated && userRole && location.pathname === '/auth') {
+        if (userRole === 'Paciente') {
+            return <Navigate to="/patien/dashboard" replace />;
+        } else if (userRole === 'Administrador') {
+            return <Navigate to="/admin/dashboard" replace />;
         }
     }
 
-
     return (
         <>
-            {/* El Header se renderiza condicionalmente */}
             {!shouldHideNav && <Header />}
 
             <main>
@@ -107,47 +268,42 @@ const AppContent: React.FC = () => {
                     <Route path="/servicios/prueba-esfuerzo" element={<PruebaEsfuerzo />} />
                     <Route path="/servicios/mapa" element={<Mapa />} />
 
-                    {/* Rutas de autenticación */}
-                    {/* AuthPage se mostrará si el usuario no está autenticado. */}
-                    {/* Si isAuthenticated es true, la lógica de redirección de arriba ya habrá actuado. */}
-                    <Route path="/auth" element={<AuthPage />} />
-                    <Route path="/login" element={<LoginPage />} /> {/* Si LoginPage es distinto de AuthPage */}
+                    {/* Ruta de autenticación principal */}
+                    <Route path="/auth" element={<AuthApp />} />
 
-                    {/* Rutas Protegidas - Asegúrate de que los roles aquí sean los mismos que en tu DB */}
+                    {/* Rutas Protegidas */}
                     <Route
-                        path="/patien/dashboard" // Ruta para el dashboard de pacientes
+                        path="/patien/dashboard"
                         element={
-                            <PrivateRoute allowedRoles={['Paciente']}> {/* Rol esperado de la DB */}
-                                <PatientDashboard />
+                            <PrivateRoute allowedRoles={['Paciente']}> {/* Corregido: eliminando 'Usuario' de allowedRoles */}
+                                <AuthApp />
                             </PrivateRoute>
                         }
                     />
                     <Route
-                        path="/admin/dashboard" // Ruta para el dashboard de administradores
+                        path="/admin/dashboard"
                         element={
-                            <PrivateRoute allowedRoles={['Administrador']}> {/* Rol esperado de la DB */}
-                                <AdminDashboard />
+                            <PrivateRoute allowedRoles={['Administrador']}>
+                                <AuthApp />
                             </PrivateRoute>
                         }
                     />
 
-                    {/* Ruta de fallback para cualquier ruta no definida que no sea manejada por la lógica de redirección */}
-                    {/* Podrías querer que redirija a /auth o /login si el usuario no está logueado */}
+                    {/* Ruta de fallback */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
 
-            {/* El Footer se renderiza condicionalmente */}
             {!shouldHideNav && <Footer />}
         </>
     );
 };
 
-// El componente App principal que envuelve todo con Router y AuthProvider
+// El componente App principal que envuelve todo con Router y AuthProvider.
 function App() {
     return (
-        <Router>
-            <AuthProvider> {/* AuthProvider debe envolver todo lo que necesite el contexto de autenticación */}
+        <Router> {/* Corregido: <Router> no necesita props location o navigator */}
+            <AuthProvider>
                 <AppContent />
             </AuthProvider>
         </Router>
