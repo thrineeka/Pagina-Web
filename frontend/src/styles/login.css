@@ -1,0 +1,433 @@
+/* src/styles/login.css */
+
+/* General Body and Font Settings */
+body {
+    margin: 0;
+    font-family: sans-serif; /* Equivalent to font-sans */
+}
+
+/* Spinner for loading state */
+.spinner {
+    animation: spin 1s linear infinite;
+    -webkit-animation: spin 1s linear infinite;
+    height: 1.25rem; /* h-5 */
+    width: 1.25rem;  /* w-5 */
+    margin-left: -0.25rem; /* -ml-1 */
+    margin-right: 0.75rem; /* mr-3 */
+    color: white; /* text-white */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Login Component Styles --- */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    padding: 1rem; /* p-4 */
+}
+
+.login-card {
+    background-color: #ffffff; /* bg-white */
+    padding: 2rem 2.5rem; /* p-8 md:p-10 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+    text-align: center;
+    width: 100%;
+    max-width: 24rem; /* max-w-sm */
+}
+
+.login-title {
+    margin-bottom: 1.5rem; /* mb-6 */
+    font-size: 2rem; /* text-3xl */
+    font-weight: 800; /* font-extrabold */
+    color: #1f2937; /* text-gray-800 */
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* space-y-5 */
+}
+
+.form-group {
+    /* No direct styles, just a container */
+}
+
+.form-label {
+    display: block;
+    text-align: left;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    color: #374151; /* text-gray-700 */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    border: 1px solid #d1d5db; /* border border-gray-300 */
+    border-radius: 0.375rem; /* rounded-md */
+    transition: all 150ms ease-in-out; /* transition duration-150 ease-in-out */
+}
+
+.form-input:focus {
+    outline: 2px solid transparent; /* focus:outline-none */
+    outline-offset: 2px;
+    border-color: #3b82f6; /* focus:border-blue-500 */
+    box-shadow: 0 0 0 1px #3b82f6, 0 0 0 3px rgba(59, 130, 246, 0.5); /* focus:ring-blue-500 focus:ring-opacity-75 */
+}
+
+.error-message {
+    color: #dc2626; /* text-red-600 */
+    font-size: 0.875rem; /* text-sm */
+    margin-top: 0.75rem; /* mt-3 */
+}
+
+.success-message {
+    color: #16a34a; /* text-green-600 */
+    font-size: 0.875rem; /* text-sm */
+    margin-top: 0.75rem; /* mt-3 */
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.625rem 1rem; /* py-2.5 px-4 */
+    background-color: #2563eb; /* bg-blue-600 */
+    color: #ffffff; /* text-white */
+    font-weight: 600; /* font-semibold */
+    border-radius: 0.375rem; /* rounded-md */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* shadow-md */
+    transition: all 150ms ease-in-out; /* transition duration-150 ease-in-out */
+    display: flex; /* flex */
+    align-items: center; /* items-center */
+    justify-content: center; /* justify-center */
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #1d4ed8; /* hover:bg-blue-700 */
+}
+
+.login-button:focus {
+    outline: 2px solid transparent; /* focus:outline-none */
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 */
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.login-links {
+    margin-top: 1.5rem; /* mt-6 */
+    font-size: 0.875rem; /* text-sm */
+}
+
+.link-button {
+    color: #2563eb; /* text-blue-600 */
+    text-decoration: none;
+    padding: 0.25rem 0.5rem; /* px-2 py-1 */
+    border-radius: 0.375rem; /* rounded-md */
+    transition: all 150ms ease-in-out; /* transition duration-150 ease-in-out */
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.link-button:hover {
+    text-decoration: underline; /* hover:underline */
+}
+
+.register-text {
+    margin-top: 0.75rem; /* mt-3 */
+    color: #4b5563; /* text-gray-600 */
+}
+
+/* --- Register Component Styles --- */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    padding: 1rem; /* p-4 */
+}
+
+.register-card {
+    background-color: #ffffff; /* bg-white */
+    padding: 2rem 2.5rem; /* p-8 md:p-10 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+    text-align: center;
+    width: 100%;
+    max-width: 32rem; /* max-w-lg */
+}
+
+.register-title {
+    margin-bottom: 1.5rem; /* mb-6 */
+    font-size: 2rem; /* text-3xl */
+    font-weight: 800; /* font-extrabold */
+    color: #1f2937; /* text-gray-800 */
+}
+
+.register-form {
+    display: grid;
+    grid-template-columns: 1fr; /* grid grid-cols-1 */
+    gap: 1rem; /* gap-4 */
+    align-items: start; /* auto-rows-min (simplified) */
+}
+
+@media (min-width: 768px) { /* md: */
+    .register-form {
+        grid-template-columns: 1fr 1fr; /* md:grid-cols-2 */
+    }
+    .register-form .col-span-2 {
+        grid-column: span 2 / span 2; /* md:col-span-2 */
+    }
+    .register-form .md\:col-span-1 {
+        grid-column: span 1 / span 1; /* md:col-span-1 */
+    }
+}
+
+.register-button {
+    width: 100%;
+    padding: 0.625rem 1rem; /* py-2.5 px-4 */
+    background-color: #16a34a; /* bg-green-600 */
+    color: #ffffff; /* text-white */
+    font-weight: 600; /* font-semibold */
+    border-radius: 0.375rem; /* rounded-md */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* shadow-md */
+    transition: all 150ms ease-in-out; /* transition duration-150 ease-in-out */
+    display: flex; /* flex */
+    align-items: center; /* items-center */
+    justify-content: center; /* justify-center */
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #15803d; /* hover:bg-green-700 */
+}
+
+.register-button:focus {
+    outline: 2px solid transparent; /* focus:outline-none */
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #22c55e, 0 0 0 4px rgba(34, 197, 94, 0.5); /* focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 */
+}
+
+.register-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.register-login-text {
+    margin-top: 1.5rem; /* mt-6 */
+    font-size: 0.875rem; /* text-sm */
+    color: #4b5563; /* text-gray-600 */
+}
+
+/* --- ForgotPassword Component Styles --- */
+.forgot-password-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    padding: 1rem; /* p-4 */
+}
+
+.forgot-password-card {
+    background-color: #ffffff; /* bg-white */
+    padding: 2rem 2.5rem; /* p-8 md:p-10 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+    text-align: center;
+    width: 100%;
+    max-width: 24rem; /* max-w-sm */
+}
+
+.forgot-password-title {
+    margin-bottom: 1.5rem; /* mb-6 */
+    font-size: 2rem; /* text-3xl */
+    font-weight: 800; /* font-extrabold */
+    color: #1f2937; /* text-gray-800 */
+}
+
+.forgot-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* space-y-5 */
+}
+
+.forgot-password-button {
+    width: 100%;
+    padding: 0.625rem 1rem; /* py-2.5 px-4 */
+    background-color: #d97706; /* bg-yellow-600 */
+    color: #ffffff; /* text-white */
+    font-weight: 600; /* font-semibold */
+    border-radius: 0.375rem; /* rounded-md */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* shadow-md */
+    transition: all 150ms ease-in-out; /* transition duration-150 ease-in-out */
+    display: flex; /* flex */
+    align-items: center; /* items-center */
+    justify-content: center; /* justify-center */
+    cursor: pointer;
+}
+
+.forgot-password-button:hover {
+    background-color: #b45309; /* hover:bg-yellow-700 */
+}
+
+.forgot-password-button:focus {
+    outline: 2px solid transparent; /* focus:outline-none */
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #f59e0b, 0 0 0 4px rgba(245, 158, 11, 0.5); /* focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75 */
+}
+
+.forgot-password-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.forgot-password-login-text {
+    margin-top: 1.5rem; /* mt-6 */
+    font-size: 0.875rem; /* text-sm */
+    color: #4b5563; /* text-gray-600 */
+}
+
+/* --- Dashboard General Styles --- */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem; /* p-4 */
+    text-align: center;
+}
+
+.dashboard-card {
+    background-color: rgba(255, 255, 255, 0.1); /* bg-white bg-opacity-10 */
+    backdrop-filter: blur(8px); /* backdrop-filter backdrop-blur-lg */
+    padding: 2rem 3rem; /* p-8 md:p-12 */
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* shadow-2xl */
+    text-align: center;
+    width: 100%;
+    max-width: 48rem; /* max-w-2xl */
+}
+
+.dashboard-title {
+    margin-bottom: 1.5rem; /* mb-6 */
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 800; /* font-extrabold */
+    color: #ffffff; /* text-white */
+    line-height: 1.25; /* leading-tight */
+}
+
+.dashboard-greeting {
+    font-size: 1.25rem; /* text-xl */
+    margin-bottom: 2rem; /* mb-8 */
+    color: #e5e7eb; /* text-gray-200 */
+}
+
+.dashboard-role {
+    font-size: 1.125rem; /* text-lg */
+    margin-bottom: 2.5rem; /* mb-10 */
+    color: #d1d5db; /* text-gray-300 */
+}
+
+.dashboard-logout-button {
+    padding: 0.75rem 2rem; /* py-3 px-8 */
+    background-color: #dc2626; /* bg-red-600 */
+    color: #ffffff; /* text-white */
+    font-weight: 700; /* font-bold */
+    font-size: 1.125rem; /* text-lg */
+    border-radius: 9999px; /* rounded-full */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+    transition: all 200ms ease-in-out; /* transition transform hover:scale-105 duration-200 ease-in-out */
+    transform: scale(1);
+    cursor: pointer;
+}
+
+.dashboard-logout-button:hover {
+    background-color: #b91c1c; /* hover:bg-red-700 */
+    transform: scale(1.05); /* hover:scale-105 */
+}
+
+.dashboard-logout-button:focus {
+    outline: 2px solid transparent; /* focus:outline-none */
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px #ef4444, 0 0 0 6px rgba(239, 68, 68, 0.5); /* focus:ring-4 focus:ring-red-500 focus:ring-opacity-75 */
+}
+
+
+/* --- Admin Dashboard Specific Styles --- */
+.admin-dashboard-container {
+    background: linear-gradient(to bottom right, #6d28d9, #4c1d95); /* bg-gradient-to-br from-purple-700 to-indigo-800 */
+    composes: dashboard-container; /* Inherit common dashboard styles */
+}
+
+
+/* --- Patient Dashboard Specific Styles --- */
+.patient-dashboard-container {
+    background: linear-gradient(to bottom right, #2563eb, #0f766e); /* bg-gradient-to-br from-blue-600 to-teal-700 */
+    composes: dashboard-container; /* Inherit common dashboard styles */
+}
+
+/* Error fallback styles */
+.error-fallback-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    padding: 1rem; /* p-4 */
+}
+
+.error-fallback-card {
+    background-color: #ffffff; /* bg-white */
+    padding: 2rem; /* p-8 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05); /* shadow-md */
+    text-align: center;
+}
+
+.error-fallback-title {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    color: #dc2626; /* text-red-600 */
+    margin-bottom: 1rem; /* mb-4 */
+}
+
+.error-fallback-message {
+    color: #374151; /* text-gray-700 */
+    margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.error-fallback-button {
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    background-color: #2563eb; /* bg-blue-600 */
+    color: #ffffff; /* text-white */
+    border-radius: 0.375rem; /* rounded-md */
+    transition: all 150ms ease-in-out; /* hover:bg-blue-700 */
+    cursor: pointer;
+}
+
+.error-fallback-button:hover {
+    background-color: #1d4ed8;
+}
