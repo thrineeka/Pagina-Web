@@ -10,6 +10,36 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000; // Puedes cambiar el puerto si es necesario
 
+// Códigos de escape ANSI para colores
+const colors = {
+    reset: "\x1b[0m",
+    bright: "\x1b[1m",
+    dim: "\x1b[2m",
+    underscore: "\x1b[4m",
+    blink: "\x1b[5m",
+    reverse: "\x1b[7m",
+    hidden: "\x1b[8m",
+
+    black: "\x1b[30m",
+    red: "\x1b[31m",
+    green: "\x1b[32m",
+    yellow: "\x1b[33m",
+    blue: "\x1b[34m",
+    magenta: "\x1b[35m",
+    cyan: "\x1b[36m", // Azul celeste
+    white: "\x1b[37m",
+
+    bgBlack: "\x1b[40m",
+    bgRed: "\x1b[41m",
+    bgGreen: "\x1b[42m",
+    bgYellow: "\x1b[43m",
+    bgBlue: "\x1b[44m",
+    bgMagenta: "\x1b[45m",
+    bgCyan: "\x1b[46m",
+    bgWhite: "\x1b[47m"
+};
+
+
 // Middlewares
 app.use(cors()); // Habilita CORS para permitir peticiones desde tu frontend React
 app.use(express.json()); // Permite a Express parsear cuerpos de solicitud JSON
@@ -21,9 +51,7 @@ const dbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
-    ssl: {
-        rejectUnauthorized: false // Esto puede ser necesario para algunos entornos de hosting, pero se recomienda true en producción si el certificado lo permite
-    }
+    
 };
 
 let pool; // Usaremos un pool de conexiones para mejor rendimiento
@@ -31,9 +59,9 @@ let pool; // Usaremos un pool de conexiones para mejor rendimiento
 async function connectToDatabase() {
     try {
         pool = mysql.createPool(dbConfig);
-        console.log('Conexión a MariaDB establecida exitosamente.');
+        console.log(`${colors.green}Conexión a MariaDB establecida exitosamente.${colors.reset}`); // Verde para éxito de conexión
     } catch (error) {
-        console.error('Error al conectar a la base de datos:', error.message);
+        console.error(`${colors.red}Error al conectar a la base de datos:`, error.message, `${colors.reset}`); // Rojo para error de conexión
         process.exit(1); // Salir si no se puede conectar a la base de datos
     }
 }
@@ -90,6 +118,7 @@ app.post('/api/usuarios/registro', async (req, res) => {
         );
 
         if (rows.length > 0) {
+            console.log(`${colors.yellow}[ADVERTENCIA] Intento de registro con usuario o email existente: ${nombre_usuario || email}${colors.reset}`); // Amarillo para advertencia
             return res.status(400).json({ error: 'El nombre de usuario o el correo electrónico ya están registrados.' });
         }
 
@@ -120,10 +149,14 @@ app.post('/api/usuarios/registro', async (req, res) => {
             ]
         );
 
+        // *** AQUI SE AGREGA LA ALERTA DE USUARIO CREADO CON COLOR VERDE ***
+      console.log(`${colors.magenta}[ALERT] Nuevo usuario registrado exitosamente: ${nombre_usuario} (ID: ${result.insertId}, Rol: ${rol})${colors.reset}`);
+
+
         res.status(201).json({ mensaje: 'Usuario registrado exitosamente', id_usuario: result.insertId });
 
     } catch (error) {
-        console.error('Error al registrar usuario:', error);
+        console.error(`${colors.red}Error al registrar usuario:`, error, `${colors.reset}`); // Rojo para errores
         res.status(500).json({ error: 'Error interno del servidor al registrar el usuario.' });
     }
 });
@@ -135,6 +168,7 @@ app.post('/api/auth/login', async (req, res) => {
     const { nombre_usuario, contrasena } = req.body;
 
     if (!nombre_usuario || !contrasena) {
+        console.log(`${colors.yellow}[ADVERTENCIA] Intento de inicio de sesión sin credenciales completas.${colors.reset}`);
         return res.status(400).json({ error: 'Por favor, ingrese su nombre de usuario y contraseña.' });
     }
 
@@ -145,6 +179,7 @@ app.post('/api/auth/login', async (req, res) => {
         );
 
         if (rows.length === 0) {
+            console.log(`${colors.yellow}[ADVERTENCIA] Intento de inicio de sesión fallido para usuario: ${nombre_usuario} (Usuario no encontrado).${colors.reset}`);
             return res.status(401).json({ error: 'Credenciales inválidas.' });
         }
 
@@ -154,6 +189,7 @@ app.post('/api/auth/login', async (req, res) => {
         const isMatch = await bcrypt.compare(contrasena, user.contrasena);
 
         if (!isMatch) {
+            console.log(`${colors.yellow}[ADVERTENCIA] Intento de inicio de sesión fallido para usuario: ${nombre_usuario} (Contraseña incorrecta).${colors.reset}`);
             return res.status(401).json({ error: 'Credenciales inválidas.' });
         }
 
@@ -163,6 +199,9 @@ app.post('/api/auth/login', async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' } // El token expira en 1 hora
         );
+
+        // *** AQUI SE AGREGA LA ALERTA DE INICIO DE SESIÓN CON COLOR VERDE ***
+        console.log(`${colors.green}[ALERT] Inicio de sesión exitoso para el usuario: ${user.nombre_usuario} (Rol: ${user.rol})${colors.reset}`);
 
         res.status(200).json({
             mensaje: 'Inicio de sesión exitoso.',
@@ -177,7 +216,7 @@ app.post('/api/auth/login', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error al iniciar sesión:', error);
+        console.error(`${colors.red}Error al iniciar sesión:`, error, `${colors.reset}`); // Rojo para errores
         res.status(500).json({ error: 'Error interno del servidor al iniciar sesión.' });
     }
 });
@@ -193,7 +232,7 @@ app.post('/api/auth/recuperar-contrasena', async (req, res) => {
         return res.status(400).json({ error: 'Por favor, ingrese su correo electrónico.' });
     }
 
-    console.log(`Simulando envío de enlace de recuperación a: ${email}`);
+    console.log(`${colors.cyan}Simulando envío de enlace de recuperación a: ${email}${colors.reset}`); // Azul celeste
 
     res.status(200).json({ mensaje: 'Si el correo electrónico está registrado, se le ha enviado un enlace para restablecer su contraseña.' });
 });
@@ -208,6 +247,7 @@ app.get('/api/usuarios/:id', verifyToken, async (req, res) => {
     // Opcional: Asegúrate de que el usuario que hace la petición tenga permisos
     // Por ejemplo, solo puede ver su propio perfil o un administrador puede ver cualquier perfil
     if (req.user.id !== parseInt(userId) && req.user.rol !== 'Administrador') {
+        console.log(`${colors.red}[ACCESO DENEGADO] Intento de acceso no autorizado a perfil de usuario ${userId} por ${req.user.nombre_usuario} (ID: ${req.user.id}, Rol: ${req.user.rol})${colors.reset}`);
         return res.status(403).json({ error: 'Acceso denegado. No tiene permisos para ver este perfil.' });
     }
 
@@ -219,13 +259,15 @@ app.get('/api/usuarios/:id', verifyToken, async (req, res) => {
         );
 
         if (rows.length === 0) {
+            console.log(`${colors.yellow}[ADVERTENCIA] Intento de obtener usuario no encontrado: ID ${userId}${colors.reset}`);
             return res.status(404).json({ error: 'Usuario no encontrado.' });
         }
-
+        
+        console.log(`${colors.cyan}Usuario obtenido: ${rows[0].nombre_usuario} (ID: ${rows[0].id_usuario})${colors.reset}`); // Azul celeste
         res.status(200).json(rows[0]);
 
     } catch (error) {
-        console.error('Error al obtener usuario:', error);
+        console.error(`${colors.red}Error al obtener usuario:`, error, `${colors.reset}`); // Rojo para errores
         res.status(500).json({ error: 'Error interno del servidor al obtener el usuario.' });
     }
 });
@@ -251,6 +293,7 @@ app.put('/api/usuarios/:id', verifyToken, async (req, res) => {
 
     // Solo un administrador puede editar cualquier usuario, o el usuario puede editar su propio perfil
     if (req.user.id !== parseInt(userId) && req.user.rol !== 'Administrador') {
+        console.log(`${colors.red}[ACCESO DENEGADO] Intento de edición no autorizado de perfil ${userId} por ${req.user.nombre_usuario} (ID: ${req.user.id}, Rol: ${req.user.rol})${colors.reset}`);
         return res.status(403).json({ error: 'Acceso denegado. No tiene permisos para editar este perfil.' });
     }
 
@@ -307,6 +350,7 @@ app.put('/api/usuarios/:id', verifyToken, async (req, res) => {
             fieldsToUpdate.push('rol = ?');
             updateParams.push(rol);
         } else if (rol !== undefined && rol !== '' && req.user.rol !== 'Administrador') {
+            console.log(`${colors.red}[ACCESO DENEGADO] Intento de cambio de rol no autorizado por ${req.user.nombre_usuario} (ID: ${req.user.id}, Rol: ${req.user.rol})${colors.reset}`);
             return res.status(403).json({ error: 'No tiene permisos para cambiar el rol de un usuario.' });
         }
 
@@ -324,6 +368,7 @@ app.put('/api/usuarios/:id', verifyToken, async (req, res) => {
         const [result] = await pool.execute(updateQuery, updateParams);
 
         if (result.affectedRows === 0) {
+            console.log(`${colors.yellow}[ADVERTENCIA] Intento de actualizar usuario no encontrado o sin cambios: ID ${userId}${colors.reset}`);
             return res.status(404).json({ error: 'Usuario no encontrado o no se realizaron cambios.' });
         }
 
@@ -332,11 +377,11 @@ app.put('/api/usuarios/:id', verifyToken, async (req, res) => {
             'SELECT id_usuario, nombre_usuario, rol, primer_nombre, apellido_paterno, apellido_materno, email, telefono, tipo_documento, numero_documento, fecha_creacion, fecha_actualizacion FROM usuarios WHERE id_usuario = ?',
             [userId]
         );
-
+        console.log(`${colors.cyan}Usuario actualizado: ${updatedUserRows[0].nombre_usuario} (ID: ${updatedUserRows[0].id_usuario})${colors.reset}`); // Azul celeste
         res.status(200).json({ mensaje: 'Usuario actualizado exitosamente', usuario: updatedUserRows[0] });
 
     } catch (error) {
-        console.error('Error al actualizar usuario:', error);
+        console.error(`${colors.red}Error al actualizar usuario:`, error, `${colors.reset}`); // Rojo para errores
         res.status(500).json({ error: 'Error interno del servidor al actualizar el usuario.' });
     }
 });
@@ -345,4 +390,15 @@ app.put('/api/usuarios/:id', verifyToken, async (req, res) => {
 // Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
+    console.log(`${colors.cyan}---------------------------------------${colors.reset}`);
+    console.log(`${colors.cyan}Rutas de API disponibles:${colors.reset}`);
+    console.log(`${colors.cyan}---------------------------------------${colors.reset}`);
+    console.log(`${colors.blue}Usuarios:${colors.reset}`);
+    console.log(`${colors.cyan}  POST /api/usuarios/registro${colors.reset}`);
+    console.log(`${colors.cyan}  GET /api/usuarios/:id (Protegida)${colors.reset}`);
+    console.log(`${colors.cyan}  PUT /api/usuarios/:id (Protegida)${colors.reset}`);
+    console.log(`${colors.blue}Autenticación:${colors.reset}`);
+    console.log(`${colors.cyan}  POST /api/auth/login${colors.reset}`);
+    console.log(`${colors.cyan}  POST /api/auth/recuperar-contrasena${colors.reset}`);
+    console.log(`${colors.cyan}---------------------------------------${colors.reset}`);
 });
